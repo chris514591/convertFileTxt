@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/unidoc/unioffice/document"
 )
 
 func main() {
@@ -61,11 +61,10 @@ func main() {
 			}
 			defer docxFile.Close()
 
-			f := excelize.NewFile()
-			sheetName := "Sheet1"
-			f.SetCellValue(sheetName, "A1", txtFile.Name())
+			doc := document.New()
+			doc.AddParagraph().AddRun().AddText(txtFile.Name())
 
-			err = f.SaveAs(docxFile.Name())
+			err = doc.SaveToFile(docxFile.Name())
 			if err != nil {
 				errorMsg := fmt.Sprintf("Error converting %s to %s: %s\n", path, docxFile.Name(), err)
 				errorLogFile.WriteString(errorMsg)
